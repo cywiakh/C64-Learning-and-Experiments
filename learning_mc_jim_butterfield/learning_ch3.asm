@@ -1,4 +1,3 @@
-
 .const      RUN_STOP_KEY = $ffe1
 .const      CHRIN = $ffe4
 .const      CHROUT = $ffd2
@@ -24,10 +23,10 @@ end:    rts
         * = PROG_START2
 
         jsr RUN_STOP_KEY // If Stop/Brk key is pressed set Z flag
-        beq end2          // jump to RTS in Stop/Brk key pressed
+        beq end2         // jump to RTS in Stop/Brk key pressed
         jsr CHRIN        // Load keyboard input in register A
         cmp #$41         // Fill Z flag
-        bcc PROG_START2   // Invalid ASCII -> Start from beginning
+        bcc PROG_START2  // Invalid ASCII -> Start from beginning
         cmp #$5a
         bcs PROG_START2
 

@@ -22,22 +22,15 @@ end:    rts
 
 start:	jsr getin       // Call subroutine to get user input
         sta $03c0       // Store Value in RAM
-        lda #$2b        // Prepare "+" ascii code
-        jsr CHROUT      // Output "+"
+        lda #$2d        // Prepare "-" ascii code
+        jsr CHROUT      // Output "-"
         jsr getin       // Call subroutine to get user input
-        tax             // Move value from reg A to X
+        sta $03c1       // Store Value in RAM
         lda #$3d        // Prepare "=" ascii code
         jsr CHROUT      // Output "="
-        txa             // Move back 2nd value from reg X to A
-        clc             // Clear C flag
-        adc $03c0       // Perform addition
-        sta $03c0       // Store addition result
-        sbc #$09        // Subtract 10 to see if >10
-        bmi oned        // branch to one digit result
-        sta $03c0       // Move subtraction result to memory
-        lda #$01        // Prepare "1" ascii code
-        jsr dispc       // Display value
-oned:   lda $03c0       // Recover Result (subtracted or not) to reg A
+        lda $03c0       // Retrieve value from memory
+        sec             // Clear C flag
+        sbc $03c1       // Perform subtraction
         jsr dispc       // Display Result
 
         lda #$0d        // Prepare <cr> ascii code
@@ -48,6 +41,3 @@ oned:   lda $03c0       // Recover Result (subtracted or not) to reg A
 dispc:  ora #$30        // Convert Numeric Value to ascii using mask
         jsr CHROUT      // Output Result
         rts             // Return to calling address
-
-
-
